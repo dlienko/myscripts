@@ -1,0 +1,36 @@
+--- cuetag-old	2011-11-21 17:19:23.000000000 +0200
++++ cuetag	2011-11-21 19:00:46.000000000 +0200
+@@ -54,8 +54,12 @@
+ 	LICENSE=''
+ 	ORGANIZATION=''
+ 	DESCRIPTION='%m'
+-	GENRE='%g'
+-	DATE=''
++	# --------------------------------- my hack! ---------------------------------
++	#GENRE='%g'
++	#DATE=''
++	DATE=`sed -n 's!^REM DATE "\?\([^"]*\)"\?!\1!p' "$cue_file"`
++	GENRE=`sed -n 's!^REM GENRE "\?\([^"]*\)"\?!\1!p' "$cue_file"`
++	# --------------------------------- my hack! ---------------------------------
+ 	LOCATION=''
+ 	CONTACT=''
+ 	ISRC='%i %u'
+@@ -63,7 +67,17 @@
+ 	(for field in $fields; do
+ 		value=""
+ 		for conv in `eval echo \\$$field`; do
+-			value=`$CUEPRINT -n $1 -t "$conv\n" "$cue_file"`
++
++	# --------------------------------- my hack! ---------------------------------
++			case $field in
++				DATE)	value=$DATE
++					;;
++				GENRE)	value=$GENRE
++					;;
++				*)	value=`$CUEPRINT -n $1 -t "$conv\n" "$cue_file"`
++					;;
++			esac
++	# --------------------------------- my hack! ---------------------------------
+ 
+ 			if [ -n "$value" ]; then
+ 				echo "$field=$value"
