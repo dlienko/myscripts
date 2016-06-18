@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# renames flac files as I prefer them to be named on my player
+
 for a in *.flac
 do
     DATE=`metaflac "$a" --show-tag=DATE | sed s/.*=//g`

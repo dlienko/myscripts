@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# takes CUE file as an argument, splits associated FLAC file into tracks, 
+# sets tags, renames the files and REMOVES ORIGINAL FILES into "trash"
+# (use at your own risk)
+
 # sudo apt-get install cuetools shntool flac
 
 FLAC=`grep FILE "$1" | grep WAVE | awk '{$1=""; $NF=""; sub(" ", ""); print}' | cut -d \" -f 2`
